@@ -9,3 +9,5 @@ atropos -T 4 -a file:24PF-adaptersF -A file:24PF-adaptersR -o 24PF-R1-trimmed.fa
 tar -czvf 24PF-R1-trimmed.fastq.gz 24PF-R1-trimmed.fastq
 tar -czvf 24PF-R2-trimmed.fastq.gz 24PF-R2-trimmed.fastq
 ```
+```
+```
