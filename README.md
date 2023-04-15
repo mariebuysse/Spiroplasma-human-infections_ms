@@ -3,11 +3,9 @@
 # Step 1: Retrieving novel *Spiroplasma* genomes from ticks
 ## 1.1. Adapters' trimming
 ```
-gzip -d 24PF-R1.fastq.gz
-gzip -d 24PF-R2.fastq.gz
-atropos -T 4 -a file:24PF-adaptersF -A file:24PF-adaptersR -o 24PF-R1-trimmed.fastq -p 24PF-R2-trimmed.fastq -pe1 24PF-R1.fastq -pe2 24PF-R2.fastq
-tar -czvf 24PF-R1-trimmed.fastq.gz 24PF-R1-trimmed.fastq
-tar -czvf 24PF-R2-trimmed.fastq.gz 24PF-R2-trimmed.fastq
+atropos -T 4 -a file:$ech-adaptersF -A file:$ech-adaptersR -o $ech-R1-trimmed.fastq -p $ech-R2-trimmed.fastq -pe1 $ech-R1.fastq -pe2 $ech-R2.fastq
 ```
+For `CAS1` and `CAS3`:
 ```
+cutadapt -b file:CAS1-adaptersF -o CAS1-R1-trimmed.fastq.gz CAS1-R1.fastq.gz
 ```
