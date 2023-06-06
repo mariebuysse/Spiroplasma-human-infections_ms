@@ -1,7 +1,7 @@
-### General command lines and analytic steps used in the production of the *Spiroplasma-human-cases* manuscript
+### Analytic steps and general command lines used in the production of the *Spiroplasma-human-cases* manuscript
 
 # Step 1: Retrieving *Spiroplasma* genomes from biological samples
-In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic **insert correct sample origin**. These cases have been reported in **insert the publication** from **autors (journal, year)**. 
+In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections. These cases have been reported in ***Spiroplasma* species as a rare cause of congenital cataract and uveitis: a case series** from **Farassat N, Reich M, Serr A, Küchlin S, Erwemi M, Auw-Hädrich C, Krastel H, and Lagrèze WA (BMC Ophthalmol, 2021)**. 
 
 For each sample, a set of paired-end reads is available. Details about the experimental and sequencing methods are available in our related manuscript. Following analyses are based on these reads' sets, and those are referred to as:
 ```
