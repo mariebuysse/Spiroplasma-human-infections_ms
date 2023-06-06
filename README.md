@@ -33,7 +33,7 @@ The contigs were binned using `CONCOCT`:
 ```
 command line
 ```
-The `clustering_merged` CSV file produced by CONCOCT needed to be exported in a tabular-delimited TEXT file. 
+The `clustering_merged` CSV file produced by `CONCOCT` needed to be exported in a tabular-delimited TEXT file. 
 The bins' names had to be renamed to match the requirements of `anvi'o` : 
 ```
 command line
@@ -44,4 +44,4 @@ The bins were taxonomically assigned using the `anvi'o` pipeline below:
 ```
 command line
 ```
-Let's see the `$ech-SUMMARY` file (html format) to check the taxnonomy results and some stats about the bins.
+Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
