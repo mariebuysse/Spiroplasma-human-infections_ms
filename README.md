@@ -18,7 +18,8 @@ cutadapt -b file:$ech-adaptersF -o $ech-R1-trimmed.fastq.gz $ech-R1.fastq.gz
 ## 1.2. Assembly
 Reads were assembled using `MEGAHIT` (https://github.com/voutcn/megahit, MEGAHIT: An ultra-fast single-node solution for large and complex metagenomics assembly via succinct de Bruijn graph, Li D, Liu C-M, Luo R, Sadakane K, and Lam T-W, Bioinformatics, 2015, doi: 10.1093/bioinformatics/btv033). 
 ```
-command line
+module load bioinfo/MEGAHIT/1.2.9
+megahit -1 $ech-R1-trimmed.fastq.gz -2 $ech-R2-trimmed.fastq.gz -o $ech-metaMEGAHIT 
 ```
 
 ## 1.3. Binning and retrieving *Spiroplasma* MAGs
