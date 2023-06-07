@@ -45,3 +45,51 @@ The bins were taxonomically assigned using the `anvi'o` pipeline below:
 command line
 ```
 Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
+
+
+# Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
+## 2.1. Phylogeny-based taxonomic assignation 
+### 2.1.1. Based on *Spiroplasma* MAGs and whole genomes
+First, single-copy orthologs (SCO) were identified using `OrthoFinder` (https://github.com/davidemms/OrthoFinder, OrthoFinder: phylogenetic orthology inference for comparative genomics, Emms DM and Kelly S, Genome Biology, 2019, doi: 10.1186/s13059-019-1832-y) from a set of specimens' genomes chosen to study the phylogenetic relationships between the obtained *Spiroplasma* MAGs and other *Spiroplasma* representatives:
+```
+commmand line
+```
+For each SCO, sequences were individually aligned using `mafft` (https://github.com/GSLBiotech/mafft, MAFFT multiple sequence alignment software version 7: improvements in performance and usability, Katoh K and Standley DM, Molecular Biology and Evolution, 2013 doi: 10.1093/molbev/mst010):
+```
+command line
+```
+For each SCO, ambigious hypervariable regions were removed using `trimAl` (https://github.com/inab/trimal, trimAl: a tool for automated alignment trimming in large-scale phylogenetic analyses, Capella-Gutiérrez S, Silla-Martínez JM, and Gabaldón T, Bioinformatics, 2009, doi: 10.1093/bioinformatics/btp348):
+```
+command line
+```
+Then, all SCO sequences were concatenated using `Amas` (https://github.com/marekborowiec/AMAS, AMAS: a fast tool for alignment manipulation and computing of summary statistics, Borowiec ML, PeerJ, 2016, doi: 10.7717/peerj.1660) in a single file:
+```
+command line
+```
+Substitution models were evaluated using `modeltest-ng` (https://github.com/ddarriba/modeltest, ModelTest-NG: A new and scalable tool for the selection of DNA and protein evolutionary models, Darriba D, Posada D, Kozlov AM, Stamatakis A, Morel B, and Flouri T, Molecular Biology and Evolution, 2020, doi: 10.1093/molbev/msz189) in order to determinate the appropriate substitution model (according to AICc criterion) to use for the phylogenetic tree construction with `RAxML` (https://github.com/stamatak/standard-RAxML, RAxML version 8: a tool for phylogenetic analysis and post-analysis of large phylogenies, Stamatakis A, Bioinformatics, 2014, doi: 10.1093/bioinformatics/btu033):
+```
+command line
+```
+The phylogenetic tree was visualized and modified using `figtree` (https://github.com/rambaut/figtree/).
+
+### 2.1.2. Based on single gene (16S rDNA gene)
+Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases of ocular infection. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced here to include the diversity of these *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (https://www.ncbi.nlm.nih.gov/books/NBK279690/, Basic local alignment search tool, Altschul SF, Gish W, Miller W, Myers EW, and Lipman DJ, Journal of Molecular Biology, 1990, doi: 10.1016/S0022-2836(05)80360-2) and the following command lines:
+```
+command line
+```
+
+The phylogenetic trees were produced in a similar way that previously described (with adaptations to nucleotidic sequences):
+```
+command line
+```
+
+### 2.1.3. Multi-locus sequencing typing (MLST)
+This phylogeny is based on an alignement of concatenated sequences of **insert number** genes (**insert genes** genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays while other sequences from published fragment of single-gene sequences or assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
+```
+command line
+```
+
+The phylogenetic tree was produced in a similar way that previously described:
+```
+command line
+```
