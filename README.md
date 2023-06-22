@@ -73,7 +73,7 @@ command line
 The phylogenetic tree was visualized and modified using `figtree` (https://github.com/rambaut/figtree/).
 
 ### 2.1.2. Based on single gene (16S rDNA gene)
-Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases of ocular infection. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced here to include the diversity of these *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (https://www.ncbi.nlm.nih.gov/books/NBK279690/, Basic local alignment search tool, Altschul SF, Gish W, Miller W, Myers EW, and Lipman DJ, Journal of Molecular Biology, 1990, doi: 10.1016/S0022-2836(05)80360-2) and the following command lines:
+Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases of ocular infection. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced to include the diversity of *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (https://www.ncbi.nlm.nih.gov/books/NBK279690/, Basic local alignment search tool, Altschul SF, Gish W, Miller W, Myers EW, and Lipman DJ, Journal of Molecular Biology, 1990, doi: 10.1016/S0022-2836(05)80360-2) and the following command lines:
 ```
 command line
 ```
@@ -84,7 +84,7 @@ command line
 ```
 
 ### 2.1.3. Multi-locus sequencing typing (MLST)
-This phylogeny is based on an alignement of concatenated sequences of **insert number** genes (**insert genes** genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays while other sequences from published fragment of single-gene sequences or assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
+This phylogeny is based on an alignement of concatenated sequences of **insert number** genes (**insert genes** genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from fragment of single-gene sequences or from assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
 ```
 command line
 ```
