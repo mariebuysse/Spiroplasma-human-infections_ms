@@ -88,6 +88,7 @@ This phylogeny is based on an alignement of concatenated sequences of 4 genes (1
 ```
 makeblastdb -in ./Genomes-ref/$ref-genome.fasta -dbtype nucl -out $ref-genome_db
 blastn -query Multiquery_Spiro.fasta -out ./output/SpiroMLST-genes_vs_$ref-genome.out -num_threads 6 -db $ref-genome_db -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -perc_identity 40
+
 ## If needed, genes showing low similarity percentage were retrieved using a tblastn:
 tblastn -query Multiquery_Spiro_prot.fasta -out ./Other-genes_prot/SpiroMLST-prot-tblastn_vs_$ref-genome.out -db $ref-genome -num_threads 6 -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -evalue 1e-10
 python getFasta.py $ref-genome.fasta query-contigsfragments.bed > contigsfragments.fasta
