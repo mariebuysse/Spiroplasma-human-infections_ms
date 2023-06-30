@@ -46,6 +46,43 @@ command line
 ```
 Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
 
+## 1.4. Quality check of the final *Spiroplasma* MAGs
+Quality and multiple statistics were accessed using miComplete (https://pypi.org/project/micomplete/, Hugoson E., Lam W.T., Guy L. (2020) miComplete: weighted quality evaluation of assembled microbial genomes. Bioinformatics. doi: 10.1093/bioinformatics/btz664) and Quast(https://github.com/ablab/quast, Gurevich A., Saveliev V., Vyahhi N., Tesler G. (2013) QUAST: quality assessment tool for genome assemblies. Bioinformatics. doi: 10.1093/bioinformatics/btt086).
+```
+## With Quast
+quast.py ./Spiro-CASES-genomes/*.fasta -o ./RESULTS-QUAST
+
+## With miComplete
+miComplete set.tab --hmms Bact105 #set.tab a tabular separated file containing per line both a path to a genome and the type (i.e. fna)
+```
+Results are:
+```
+## Quast
+Assembly                    Spiro-CAS1-contigs  Spiro-CAS3-contigs
+# contigs (>= 0 bp)         195                 229               
+# contigs (>= 1000 bp)      195                 229               
+# contigs (>= 5000 bp)      86                  95                
+# contigs (>= 10000 bp)     42                  45                
+# contigs (>= 25000 bp)     5                   2                 
+# contigs (>= 50000 bp)     0                   0                 
+Total length (>= 0 bp)      1292297             1359048           
+Total length (>= 1000 bp)   1292297             1359048           
+Total length (>= 5000 bp)   1039119             1037392           
+Total length (>= 10000 bp)  721044              683917            
+Total length (>= 25000 bp)  180050              55248             
+Total length (>= 50000 bp)  0                   0                 
+# contigs                   195                 229               
+Largest contig              40341               28125             
+Total length                1292297             1359048           
+GC (%)                      23.01               24.58             
+N50                         11017               10069             
+N75                         5947                5176              
+L50                         35                  45                
+L75                         74                  92                
+# N's per 100 kbp           0.00                0.00
+
+## miComplete
+```
 
 # Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Phylogeny-based taxonomic assignation 
