@@ -84,12 +84,29 @@ command line
 ```
 
 ### 2.1.3. Multi-locus sequencing typing (MLST)
-This phylogeny is based on an alignement of concatenated sequences of **insert number** genes (**insert genes** genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from fragment of single-gene sequences or from assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
+This phylogeny is based on an alignement of concatenated sequences of 4 genes (16S rDNA, *dnaK*, *gyrA*, and *rpoB* genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from fragment of single-gene sequences or from assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
 ```
-command line
+makeblastdb -in ./Genomes-ref/$ref-genome.fasta -dbtype nucl -out $ref-genome_db
+blastn -query Multiquery_Spiro.fasta -out ./output/SpiroMLST-genes_vs_$ref-genome.out -num_threads 6 -db $ref-genome_db -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -perc_identity 40
+## If needed, genes showing low similarity percentage were retrieved using a tblastn:
+tblastn -query Multiquery_Spiro_prot.fasta -out ./Other-genes_prot/SpiroMLST-prot-tblastn_vs_$ref-genome.out -db $ref-genome -num_threads 6 -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -evalue 1e-10
+python getFasta.py $ref-genome.fasta query-contigsfragments.bed > contigsfragments.fasta
 ```
 
 The phylogenetic tree was produced in a similar way that previously described:
 ```
-command line
+for file in /CONC/*
+do mafft "$file" > "$file"
+done
+
+cp ./CONC/*_align.fasta ./CONC_trimal/
+for file in /CONC_trimal/*
+do trimal -in "$file" -out "$file" -fasta -gt 1 -cons 50
+done
+
+AMAS.py concat -f fasta -d dna --in-files ./CONC_trimal/*.fasta
+
+modeltest-ng -i Spiro-MLST.fasta -p 12 -T raxml -d nt
+
+raxmlHPC-PTHREADS -T 8 -f a -s Spiro-MLST.fasta -n Spiro-MLST.boot -m GTRGAMMAIX -x 1234 -# 1000 -p 123
 ```
