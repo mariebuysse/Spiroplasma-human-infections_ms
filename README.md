@@ -84,6 +84,11 @@ L75                         74                  92
 ## miComplete
 ```
 
+## 1.5. Annotation
+```
+prokka $ech-genome.fasta --locustag $ech --prefix $ech --outdir Prokka-$ech --rfam --compliant --cpus 6
+```
+
 # Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Phylogeny-based taxonomic assignation 
 ### 2.1.1. Based on *Spiroplasma* MAGs and whole genomes
