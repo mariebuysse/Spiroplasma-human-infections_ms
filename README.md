@@ -93,7 +93,11 @@ prokka $ech-genome.fasta --locustag $ech --prefix $ech --outdir Prokka-$ech --rf
 ```
 
 ## 1.6. Genomes' visualization
-
+`GCview` 
+```
+perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml -gc_skew F -gc_content F -size large-v2 -gene_decoration arc -tick_density 0.02 -custom backboneThickness=20 featureThickness=200 featureSlotSpacing=60
+java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
+```
 
 # Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Phylogeny-based taxonomic assignation 
