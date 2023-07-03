@@ -53,7 +53,7 @@ Quality and multiple statistics were accessed using miComplete (https://pypi.org
 quast.py ./Spiro-CASES-genomes/*.fasta -o ./RESULTS-QUAST
 
 ## With miComplete
-miComplete set.tab --hmms Bact105 #set.tab a tabular separated file containing per line both a path to a genome and the type (i.e. fna)
+miComplete miComplete_Spiro-human.tab --hmms Bact105 #miComplete_Spiro-human.tab a tabular separated file containing per line both a path to a genome and the type (i.e. fna)
 ```
 Results are:
 ```
@@ -82,12 +82,18 @@ L75                         74                  92
 # N's per 100 kbp           0.00                0.00
 
 ## miComplete
+Name	Length	GC-content	Present Markers	Completeness	Redundancy	ContigsN50	L50	N90	L90	CDs	
+Spiro-CAS1-contigs	1292297	23.0	82	0.7810	1.1585	195	11017	35	3016	118	1971	
+Spiro-CAS3-contigs	1359048	24.56	81	0.7714	1.1481	229	10069	45	2560	146	2025	
 ```
 
 ## 1.5. Annotation
 ```
 prokka $ech-genome.fasta --locustag $ech --prefix $ech --outdir Prokka-$ech --rfam --compliant --cpus 6
 ```
+
+## 1.6. Genomes' visualization
+
 
 # Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Phylogeny-based taxonomic assignation 
