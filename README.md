@@ -23,6 +23,8 @@ megahit -1 $ech-R1-trimmed.fastq.gz -2 $ech-R2-trimmed.fastq.gz -o $ech-metaMEGA
 ```
 
 ## 1.3. Binning and retrieving *Spiroplasma* MAGs
+**NEED TO TEST: https://rhysnewell.github.io/rosella/usage/ & https://bitbucket.org/berkeleylab/metabat/src/master/**
+
 *Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (https://github.com/BinPro/CONCOCT, Binning metagenomic contigs by coverage and composition, Alneberg J, Smári Bjarnason B, de Bruijn I, Schirmer M, Quick J, Ijaz U, Lahti L, Loman N, Andersson A, and Quince C, Nature Methods, 2014, doi: 10.1038/nmeth.3103) and the `anvi'o` pipeline (https://anvio.org/, Community-led, integrated, reproducible multi-omics with anvi’o, Eren A, Kiefl E, Shaiber A et al., Nature Microbiology, 2021, doi: 10.1038/s41564-020-00834-3). 
 
 First, the contigs were formated to match the requirements of `anvi'o`. 
