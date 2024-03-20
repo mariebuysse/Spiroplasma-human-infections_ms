@@ -1,3 +1,38 @@
+# To do list
+### Phylogenies
+Trees: 
+- 16S only (5 trees): search other seq. - align - model - tree  
+- individual genes: search other seq. - align - model - tree  
+- MLST: restrict current seq - align - model - tree   
+
+### Phylogenomics (!!!!!will need to be redo if changing binning tool!!!!!)
+OrthoFinder 32 genomes: running  
+Align:  
+Model:  
+Tree:  
+Figure:   
+
+### Genome retrieving
+Assembly: done for 4  
+Mapping for .bam: running  
+Binning CONCOCT: 2 CASES  
+Binning metabat: WRITE THE SCRIPT  
+End binning with anvio:  
+Quality:  
+Completeness:  
+Visualization:  
+
+### Genomic analyses
+INCLUDING: all Sixodetis genomes (ticks & others), Smirum, Mycoplasma patho, OTHERS SPIRO CLADES?  
+Virulence Mycoplasma:  
+RIP:  
+Ankyrin:  
+MK genes:  
+T4SS (Smirum already published and Mycoplasma):  
+Genomic content organized by function for the 4 genomes:  
+
+
+
 ### Analytic steps and general command lines used in the production of the *Spiroplasma-human-cases* manuscript
 
 # Step 1: Retrieving *Spiroplasma* genomes from biological samples
