@@ -1,26 +1,7 @@
 # To do list
-### Phylogenies
-Trees: 
-- 16S only (5 trees): search other seq. - align - model - tree  
-- individual genes: search other seq. - align - model - tree  
-- MLST: restrict current seq - align - model - tree   
-
-### Phylogenomics (!!!!!will need to be redo if changing binning tool!!!!!)
-OrthoFinder 32 genomes: running  
-Align:  
-Model:  
-Tree:  
-Figure:   
-
 ### Genome retrieving
-Assembly: done for 4  
-Mapping for .bam: running  
-Binning CONCOCT: 2 CASES  
-Binning metabat: WRITE THE SCRIPT  
-End binning with anvio:  
-Quality:  
-Completeness:  
-Visualization:  
+GRM-P1 & GRM-P3 : binning concoct + anvio OK 
+SWD-P1 & SWD-P2 : test d'extract reads via Kraken et bwa align avec CAS1 puis MEGAHIT puis binning
 
 ### Genomic analyses
 INCLUDING: all Sixodetis genomes (ticks & others), Smirum, Mycoplasma patho, OTHERS SPIRO CLADES?  
