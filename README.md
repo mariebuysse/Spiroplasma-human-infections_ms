@@ -1,7 +1,7 @@
 # To do list
 ### Genome retrieving
-GRM-P1 & GRM-P3 : binning concoct + anvio OK\ 
-SWD-P1 & SWD-P2 : test d'extract reads via Kraken et bwa align avec CAS1 puis MEGAHIT puis binning\
+GRM-P1 & GRM-P3 : binning concoct + anvio OK/ 
+SWD-P1 & SWD-P2 : test d'extract reads via Kraken et bwa align avec CAS1 puis MEGAHIT puis binning/
 
 ### Genomic analyses
 INCLUDING: all Sixodetis genomes (ticks & others), Smirum, Mycoplasma patho, OTHERS SPIRO CLADES?\  
