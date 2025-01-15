@@ -191,5 +191,6 @@ AMAS.py concat -f fasta -d dna --in-files ./CONC_trimal/*.fasta
 
 modeltest-ng -i Spiro-MLST.fasta -p 12 -T raxml -d nt
 
-raxmlHPC-PTHREADS -T 8 -f a -s Spiro-MLST.fasta -n Spiro-MLST.boot -m GTRGAMMAIX -x 1234 -# 1000 -p 123
+raxml-ng --all --msa Spiro-MLST.fasta --model GTR+I+G4 --prefix Spiro-MLST --seed 5 --threads 8 --bs-trees 1000
+raxml-ng --support --tree Spiro-MLST.raxml.bestTree --bs-trees 1000 --prefix SpiroMLST-boot --threads 2
 ```
