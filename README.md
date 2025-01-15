@@ -12,6 +12,9 @@ MK genes:
 T4SS (Smirum already published and Mycoplasma):  
 Genomic content organized by function for the 4 genomes:  
 
+### Phylogenies
+16S : v6 1-500; v6 1-700; v6 1-1400; v7 650-1400
+MLST : v6
 
 
 ### Analytic steps and general command lines used in the production of the *Spiroplasma-human-cases* manuscript
