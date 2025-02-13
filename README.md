@@ -150,10 +150,10 @@ done
 cp ./Single_Copy_Orthologue_Sequences_trimal/*_rename.fasta ./Single_Copy_Orthologue_Sequences_AMAS/
 AMAS.py concat -f fasta -d aa --in-files ./Single_Copy_Orthologue_Sequences_AMAS/*.fasta
 ```
-Substitution models were evaluated using `modeltest-ng` (https://github.com/ddarriba/modeltest, ModelTest-NG: A new and scalable tool for the selection of DNA and protein evolutionary models, Darriba D, Posada D, Kozlov AM, Stamatakis A, Morel B, and Flouri T, Molecular Biology and Evolution, 2020, doi: 10.1093/molbev/msz189) in order to determinate the appropriate substitution model (according to AICc criterion) to use for the phylogenetic tree construction with `RAxML` (https://github.com/stamatak/standard-RAxML, RAxML version 8: a tool for phylogenetic analysis and post-analysis of large phylogenies, Stamatakis A, Bioinformatics, 2014, doi: 10.1093/bioinformatics/btu033):
+Substitution models were evaluated using `modeltest-ng` (https://github.com/ddarriba/modeltest, ModelTest-NG: A new and scalable tool for the selection of DNA and protein evolutionary models, Darriba D, Posada D, Kozlov AM, Stamatakis A, Morel B, and Flouri T, Molecular Biology and Evolution, 2020, doi: 10.1093/molbev/msz189) in order to determinate the appropriate substitution model (according to AICc criterion) to use for the phylogenetic tree construction with `RAxML-NG` (https://github.com/stamatak/standard-RAxML, RAxML-NG: A fast, scalable, and user-friendly tool for maximum likelihood phylogenetic inference, Kozlov A.M, Darriba D, Flouri T, Morel B, and Stamatakis A, Bioinformatics, 2019, doi: 10.1093/bioinformatics/btz305):
 ```
 modeltest-ng -i Spiro-human_concatenated.faa -p 12 -T raxml -d aa
-raxmlHPC-PTHREADS -T 8 -f a -s Spiro-human_concatenated.faa -n Spiro-phylo -m PROTGAMMAIJTT -x 1234 -# 1000 -p 1234
+raxml-ng ...
 ```
 The phylogenetic tree was visualized and modified using `figtree` (https://github.com/rambaut/figtree/).
 
