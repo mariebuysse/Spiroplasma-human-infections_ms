@@ -197,3 +197,11 @@ modeltest-ng -i Spiro-MLST.fasta -p 12 -T raxml -d nt
 raxml-ng --all --msa Spiro-MLST.fasta --model GTR+I+G4 --prefix Spiro-MLST --seed 5 --threads 8 --bs-trees 1000
 raxml-ng --support --tree Spiro-MLST.raxml.bestTree --bs-trees 1000 --prefix SpiroMLST-boot --threads 2
 ```
+## 2.2. fastANI and EZAAI
+On the same dataset that used for phylogenomics:
+```
+fastANI --rl list_genomes_ANI_Spiro-humains.txt --ql list_genomes_ANI_Spiro-humains.txt -o fastani_Spiro_humains.txt --matrix
+
+ezaai convert -i ./Genomes_Bakta_identity/SZISE.faa -s prot -o SZISE_db
+ezaai calculate -i db_EZAAI_Spiro_humains/ -j db_EZAAI_Spiro_humains/ -o EZAAI_Spiro_humains_matrix.txt -t 6
+```
