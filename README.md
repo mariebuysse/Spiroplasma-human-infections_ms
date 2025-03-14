@@ -112,7 +112,7 @@ Spiro-CAS3-contigs	1359048	24.56	81	0.7714	1.1481	229	10069	45	2560	146	2025
 ```
 prokka $ech-genome.fasta --locustag $ech --prefix $ech --outdir Prokka-$ech --rfam --compliant --cpus 6
 
-bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-SpiroGRMP1/ --prefix SpiroGRMP1 --locus-tag SPIROGRMP1 --genus Spiroplasma --species ixodetis --strain GRM-P1 --threads 4 Spiro-CAS1-contigs.fasta
+bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-SpiroGRMP1/ --prefix SpiroGRMP1 --locus-tag SPIROGRMP1 --genus Spiroplasma --species ixodetis --strain GRM-P1 --threads 4 Spiro-CAS1-contigs.fasta --translation-table 4
 ```
 
 ## 1.6. Genomes' visualization
