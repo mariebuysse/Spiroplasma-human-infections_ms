@@ -204,4 +204,8 @@ fastANI --rl list_genomes_ANI_Spiro-humains.txt --ql list_genomes_ANI_Spiro-huma
 
 ezaai convert -i ./Genomes_Bakta_identity/SZISE.faa -s prot -o SZISE_db
 ezaai calculate -i db_EZAAI_Spiro_humains/ -j db_EZAAI_Spiro_humains/ -o EZAAI_Spiro_humains_matrix.txt -t 6
+aai_data <- read.table("EZAAI_Spiro_humains_matrix_v2_racc.txt", header=T,fill=T,sep="\t",dec=",")
+colnames(aai_data) <- c("Label_1", "Label_2", "AAI")
+aai_matrix <- aai_data %>% pivot_wider(names_from = Label_2, values_from = AAI)
+write.table(aai_matrix, "EZAAI_Spiro_humains_matrix_v2_matrix.txt", col.names = TRUE,row.names = FALSE, sep = "\t")
 ```
