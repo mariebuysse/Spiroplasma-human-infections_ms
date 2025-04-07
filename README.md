@@ -208,4 +208,6 @@ aai_data <- read.table("EZAAI_Spiro_humains_matrix_v2_racc.txt", header=T,fill=T
 colnames(aai_data) <- c("Label_1", "Label_2", "AAI")
 aai_matrix <- aai_data %>% pivot_wider(names_from = Label_2, values_from = AAI)
 write.table(aai_matrix, "EZAAI_Spiro_humains_matrix_v2_matrix.txt", col.names = TRUE,row.names = FALSE, sep = "\t")
+aai_mat <- as.matrix(sapply(aai_matrix, as.numeric))
+heatmaply(aai_mat)
 ```
