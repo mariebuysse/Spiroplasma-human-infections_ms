@@ -211,3 +211,10 @@ write.table(aai_matrix, "EZAAI_Spiro_humains_matrix_v2_matrix.txt", col.names = 
 aai_mat <- as.matrix(sapply(aai_matrix, as.numeric))
 heatmaply(aai_mat)
 ```
+
+## 2.3. COG categories
+Using eggNOG-mapper:
+```
+# need to try
+emapper.py -i genome_proteins.faa -o genome_COG_annotation --itype proteins --cpu 8
+```
