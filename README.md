@@ -11,8 +11,10 @@
    
 
 # 1. Retrieving *Spiroplasma* genomes from biological samples
-In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy samples). These cases have been reported in [Farassat N et al. 2021](https://bmcophthalmol.biomedcentral.com/articles/10.1186/s12886-021-02201-0).\  
-For each sample, a set of paired-end reads is available in NCBI (SRA: XXXX & XXXX). Details about the experimental and sequencing methods are available in the related manuscript.\  
+In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy samples). These cases have been reported in [Farassat N et al. 2021](https://bmcophthalmol.biomedcentral.com/articles/10.1186/s12886-021-02201-0).\
+
+For each sample, a set of paired-end reads is available in NCBI (SRA: XXXX & XXXX). Details about the experimental and sequencing methods are available in the related manuscript.\
+
 Following analyses are based on these reads' sets, and those are referred to as:
 ```
 ech="GRMP1 GRMP3"
