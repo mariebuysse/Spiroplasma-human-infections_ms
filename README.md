@@ -1,23 +1,4 @@
-# To do list
-### Genome retrieving
-GRM-P1 & GRM-P3 : binning concoct + anvio OK  
-SWD-P1 & SWD-P2 : test d'extract reads via Kraken et bwa align avec CAS1 puis MEGAHIT puis binning  
-
-### Genomic analyses
-INCLUDING: all Sixodetis genomes (ticks & others), Smirum, Mycoplasma patho, OTHERS SPIRO CLADES?  
-Virulence Mycoplasma:  
-RIP:  
-Ankyrin:   
-MK genes:  
-T4SS (Smirum already published and Mycoplasma):  
-Genomic content organized by function for the 4 genomes:  
-
-### Phylogenies
-16S : v6 1-500; v6 1-700; v6 1-1400; v7 650-1400  
-MLST : v6  
-
-
-### Analytic steps and general command lines used in the production of the *Spiroplasma-human-cases* manuscript
+>This repository details command lines used in the production of the "**TITLE**" manuscript. 
 
 # Step 1: Retrieving *Spiroplasma* genomes from biological samples
 In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy and vitrectomy samples). These cases have been reported in ***Spiroplasma* species as a rare cause of congenital cataract and uveitis: a case series** from **Farassat N, Reich M, Serr A, Küchlin S, Erwemi M, Auw-Hädrich C, Krastel H, and Lagrèze WA (BMC Ophthalmol, 2021, doi: 10.1186/s12886-021-02201-0)**. 
