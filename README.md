@@ -9,10 +9,13 @@
   - [1.5. Annotation](#15-annotation)
   - [1.6. MAGs' visualization](#16-mags-visualization)
 - [2. Genomes' description and comparison with others *Spiroplasma* genomes](#2-genomes-description-and-comparison-with-others-spiroplasma-genomes)
-  - [2.1. Phylogeny-based taxonomic assignation](#21-phylogeny-based-taxonomic-assignation)
-    - [2.1.1. Based on *Spiroplasma* MAGs and whole genomes](#211-based-on-spiroplasma-mags-and-whole-genomes)
-    - [2.1.2. Text](#212-text)
-   
+  - [2.1. Identity matrix (ANI & AAI)](#21-identity-matrix-ani-aai)
+  - [2.2. Genomic content comparison between MAGs, *S. ixodetis* and *S. platyhelix* genomes](#22-genomic-content-comparison-between-mags-s-ixodetis-and-s-platyhelix-genomes)
+  - [2.3. COG categories prediction](#23-cog-categories-prediction)
+  - [2.4. Phylogenomics](#24-phylogenomics)
+- [3. Gene-based phylogenetic analyses](#3-gene-based-phylogenetic-analyses)
+
+
 
 # 1. Retrieving *Spiroplasma* genomes from biological samples
 In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy samples). These cases have been reported in [Farassat N et al. 2021](https://bmcophthalmol.biomedcentral.com/articles/10.1186/s12886-021-02201-0).
@@ -25,7 +28,7 @@ ech="GRMP1 GRMP3"
 ```
 
 ## 1.1. Adapters' trimming
-Adapters' sequences were removed from raw reads using `Cutadapt` (see [here](https://cutadapt.readthedocs.io/en/stable/)):
+Adapters' sequences were removed from raw reads using `Cutadapt` (see details [here](https://cutadapt.readthedocs.io/en/stable/)):
 ```
 cutadapt -b file:$ech-adaptersF -o $ech-R1-trimmed.fastq.gz $ech-R1.fastq.gz
 ```
@@ -37,32 +40,52 @@ megahit -1 $ech-R1-trimmed.fastq.gz -2 $ech-R2-trimmed.fastq.gz -o $ech-metaMEGA
 ```
 
 ## 1.3. Binning and retrieving *Spiroplasma* MAGs
-*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (see [here](https://github.com/BinPro/CONCOCT)) and the `anvi'o` pipeline (see [here](https://anvio.org/)).
+*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (see details [here](https://github.com/BinPro/CONCOCT)) and the `anvi'o` pipeline (see details [here](https://anvio.org/)).
 
 First, the contigs were formated to match the requirements of `anvi'o`:
 ```
-command line
+sed '/^>/s/ .*//' $ech-contigs.fa > $ech-contigs-rename.fa
+rm $ech-contigs.fa
+mv $ech-contigs-rename.fa $ech-contigs.fa
 ```
 The contigs were binned using `CONCOCT`: 
 ```
-command line
-```
-The `clustering_merged` CSV file produced by `CONCOCT` needed to be exported in a tabular-delimited TEXT file. 
+bwa index $ech-contigs.fa
+bwa mem -t 4 $ech-contigs.fa $ech-R1.fastq.gz $ech-R2.fastq.gz | samtools sort -@ 4 -T mapped -O BAM -o $ech-reads-mapped.bam
+samtools index $ech-reads-mapped.bam
 
-The bins' names had to be renamed to match the requirements of `anvi'o` : 
+cut_up_fasta.py $ech-contigs.fa -c 10000 -o 0 --merge_last -b contigs_10K.bed > contigs_10K.fa
+concoct_coverage_table.py contigs_10K.bed $ech-reads-mapped.bam > coverage_table.tsv
+concoct --composition_file contigs_10K.fa --coverage_file coverage_table.tsv -b $ech-concoctMEGAHIT_output/ -t 4
+merge_cutup_clustering.py $ech-concoctMEGAHIT_output/clustering_gt1000.csv > $ech-concoctMEGAHIT_output/clustering_merged.csv
+mkdir $ech-concoctMEGAHIT_output/fasta_bins
+extract_fasta_bins.py $ech-contigs.fa $ech-concoctMEGAHIT_output/clustering_merged.csv --output_path $ech-concoctMEGAHIT_output/fasta_bins
 ```
-command line
+The `clustering_merged` CSV file produced by `CONCOCT` needed to be exported in a tabular-delimited TEXT file and the bins' names had to be renamed to match the requirements of `anvi'o` : 
 ```
-The `bins-renamed.txt` file had to be transformed again to correspond to a tabular-delimited TEXT file, called `bins.txt` hereafter.
+awk '$2="bin"$2 {print}' bins-to-format.txt > bins-renamed.txt
+```
+The `bins-renamed.txt` file had to be transformed again to correspond to a tabular-delimited TEXT file, called `bins.txt` hereafter. The bins were taxonomically assigned using the `anvi'o` pipeline below: 
+```
+#To create the contigs database
+anvi-gen-contigs-database -f $ech-contigs.fa -o $ech-metaMEGAHIT.db --ignore-internal-stop-codons -n Binning -T 4
+anvi-run-hmms -c $ech-metaMEGAHIT.db
 
-The bins were taxonomically assigned using the `anvi'o` pipeline below: 
-```
-command line
+#To create the profile database
+anvi-profile -i $ech-reads-mapped.bam -c $ech-metaMEGAHIT.db --min-contig-length 250 -T 4 -o $ech-PROFILE --cluster-contigs
+
+#To import the bins as a collection
+anvi-import-collection bins.txt -c $ech-metaMEGAHIT.db -p $ech-PROFILE/PROFILE.db -C bins --contigs-mode
+
+#To assign the bins and visualize the results
+anvi-run-scg-taxonomy -c $ech-metaMEGAHIT.db -T 2
+anvi-estimate-scg-taxonomy -c $ech-metaMEGAHIT.db --output-file $ech-TAXONOMY.txt -p $ech-PROFILE/PROFILE.db -C bins --compute-scg-coverages -T 2
+anvi-summarize -p $ech-PROFILE/PROFILE.db -c $ech-metaMEGAHIT.db -C bins -o $ech-SUMMARY 
 ```
 Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
 
 ## 1.4. Quality check of the final *Spiroplasma* MAGs
-Quality and multiple statistics were accessed using `miComplete` (see [here](https://pypi.org/project/micomplete/)) and `Quast` (see [here](https://github.com/ablab/quast)):
+Quality and multiple statistics were accessed using `miComplete` (see details [here](https://pypi.org/project/micomplete/)) and `Quast` (see details [here](https://github.com/ablab/quast)):
 ```
 #Quast
 quast.py ./Spiro-GRM-genomes/*.fasta -o ./RESULTS-QUAST
@@ -104,39 +127,81 @@ Spiro-GRMP3	1359048	0.25	81	0.7714	1.1481	229	10069	45	2560	146	2025
 ```
 
 ## 1.5. Annotation
-Annotation was obtained using `Bakta` (see [here](https://github.com/oschwengers/bakta)):
+Annotation was obtained using `Bakta` (see details [here](https://github.com/oschwengers/bakta)):
 ```
 bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-Spiro-$ech/ --prefix Spiro-$ech --locus-tag SPIRO-$ech --genus Spiroplasma --species ixodetis --strain -$ech --threads 4 Spiro--$ech.fasta --translation-table 4
 ```
 
 ## 1.6. MAGs' visualization
-MAG representation was performed using `GCview` (see [here](https://github.com/paulstothard/cgview)):
+MAG representation was performed using `GCview` (see details [here](https://github.com/paulstothard/cgview)):
 ```
 perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml -gc_skew F -gc_content F -size large-v2 -gene_decoration arc -tick_density 0.02 -custom backboneThickness=20 featureThickness=200 featureSlotSpacing=60
 java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
 ```
 
 # 2. Genomes' description and comparison with others *Spiroplasma* genomes 
-## 2.1. Phylogeny-based taxonomic assignation 
-### 2.1.1. Based on *Spiroplasma* MAGs and whole genomes
-First, single-copy orthologs (SCO) were identified using `OrthoFinder` (https://github.com/davidemms/OrthoFinder, OrthoFinder: phylogenetic orthology inference for comparative genomics, Emms DM and Kelly S, Genome Biology, 2019, doi: 10.1186/s13059-019-1832-y) from a set of specimens' genomes chosen to study the phylogenetic relationships between the obtained *Spiroplasma* MAGs and other *Spiroplasma* representatives:
+## 2.1. Identity matrix (ANI & AAI)
+Identity matrix were calcultated using `FastANI` (see details [here](https://github.com/ParBLiSS/FastANI)) and `EzAAI` (see details [here](https://github.com/endixk/ezaai)):
+```
+#fastANI
+fastANI --rl list_genomes_ANI.txt --ql list_genomes_ANI.txt -o fastani_Spiro.txt --matrix
+
+#EZAAI
+ezaai convert -i $genome.faa -s prot -o $genome_db
+ezaai calculate -i db_EZAAI_all_Spiro/ -j db_EZAAI_all_Spiro/ -o EZAAI_Spiro_matrix.txt -t 6
+aai_data <- read.table("EZAAI_Spiro_matrix.txt", header=T,fill=T,sep="\t",dec=",")
+colnames(aai_data) <- c("Label_1", "Label_2", "AAI")
+aai_matrix <- aai_data %>% pivot_wider(names_from = Label_2, values_from = AAI)
+aai_mat <- as.matrix(sapply(aai_matrix, as.numeric))
+heatmaply(aai_mat)
+```
+
+## 2.2. Genomic content comparison between MAGs, *S. ixodetis* and *S. platyhelix* genomes
+First, single-copy orthologs (SCO) were identified using `OrthoFinder` (see details [here](https://github.com/davidemms/OrthoFinder)), then differences were visualized using R environment and `ggVennDiagram` R package (see details [here](https://www.rdocumentation.org/packages/ggVennDiagram/versions/1.2.2)): 
+```
+#OrthoFinder
+orthofinder -f ./OrthoFinder_genomes/ -t 4 -S blast ## OrthoFinder_genomes being a directory including all .faa files of specimens of interest
+
+#R environment
+ortho_tab <- read.table("GeneCount_GRMP_Sixo.txt", sep="\t", header=TRUE, fill=TRUE) 
+SiRHIGRMP1 <- subset(ortho_tab, ortho_tab$GRMP1>0)
+SiRHIGRMP1_list <- SiRHIGRMP1$Orthogroup
+SiRHIGRMP3 <- subset(ortho_tab, ortho_tab$GRMP3>0)
+SiRHIGRMP3_list <- SiRHIGRMP3$Orthogroup
+Sixo <- subset(ortho_tab, ortho_tab$Sixo>0)
+Sixo_list <- Sixo$Orthogroup
+Spla <- subset(ortho_tab, ortho_tab$Spla>0)
+Spla_list <- Spla$Orthogroup
+Orthologs <- list(SiRHIGRMP1 = SiRHIGRMP1_list, SiRHIGRMP3 = SiRHIGRMP3_list, Sixo = Sixo_list, Spla = Spla_list)
+p <- ggVennDiagram(Orthologs, label_percent_digit = 1, label_size = 4) 
+plot_venn <- p + scale_fill_distiller(palette = "PuBu", direction = 1)
+```
+
+## 2.3. COG categories prediction
+COG categories were predicted using `eggNOG-mapper` (see details [here](https://github.com/eggnogdb/eggnog-mapper)): 
+```
+emapper.py -i Spiro-$ech.faa --itype proteins --output $ech --trans_table 4 -m diamond
+```
+
+## 2.4. Phylogenomics
+First, single-copy orthologs (SCO) were identified using `OrthoFinder` (see details [here](https://github.com/davidemms/OrthoFinder)) from a set of genomes chosen to study the phylogenetic relationships between the obtained *Spiroplasma* MAGs and other *Spiroplasma* representatives:
 ```
 orthofinder -f ./OrthoFinder_genomes/ -t 4 -S blast ## OrthoFinder_genomes being a directory including all .faa files of specimens of interest
 ```
-For each SCO, sequences were individually aligned using `mafft` (https://github.com/GSLBiotech/mafft, MAFFT multiple sequence alignment software version 7: improvements in performance and usability, Katoh K and Standley DM, Molecular Biology and Evolution, 2013 doi: 10.1093/molbev/mst010):
+For each SCO, sequences were individually aligned using `mafft` (see details [here](https://github.com/GSLBiotech/mafft)):
 ```
 for file in /Single_Copy_Orthologue_Sequences/*
 do mafft "$file" > "$file"
 done
 ```
-For each SCO, ambigious hypervariable regions were removed using `trimAl` (https://github.com/inab/trimal, trimAl: a tool for automated alignment trimming in large-scale phylogenetic analyses, Capella-Gutiérrez S, Silla-Martínez JM, and Gabaldón T, Bioinformatics, 2009, doi: 10.1093/bioinformatics/btp348):
+For each SCO, ambigious hypervariable regions were removed using `trimAl` (see details [here](https://github.com/inab/trimal)):
 ```
 cp ./Single_Copy_Orthologue_Sequences/*_align.fasta ./Single_Copy_Orthologue_Sequences_trimal/
 for file in /Single_Copy_Orthologue_Sequences_trimal/*
 do trimal -in "$file" -out "$file" -fasta -gt 1 -cons 50
 done
 ```
-Then, all SCO sequences were concatenated using `Amas` (https://github.com/marekborowiec/AMAS, AMAS: a fast tool for alignment manipulation and computing of summary statistics, Borowiec ML, PeerJ, 2016, doi: 10.7717/peerj.1660) in a single file:
+Then, all SCO sequences were concatenated using `Amas` (see details [here](https://github.com/marekborowiec/AMAS)):
 ```
 for file in /Single_Copy_Orthologue_Sequences_trimal/*
 do awk '/^>/{print ">organism" ++i; next}{print}' < "$file" > "${file%_align.fasta}_rename.fasta"
@@ -144,14 +209,18 @@ done
 cp ./Single_Copy_Orthologue_Sequences_trimal/*_rename.fasta ./Single_Copy_Orthologue_Sequences_AMAS/
 AMAS.py concat -f fasta -d aa --in-files ./Single_Copy_Orthologue_Sequences_AMAS/*.fasta
 ```
-Substitution models were evaluated using `modeltest-ng` (https://github.com/ddarriba/modeltest, ModelTest-NG: A new and scalable tool for the selection of DNA and protein evolutionary models, Darriba D, Posada D, Kozlov AM, Stamatakis A, Morel B, and Flouri T, Molecular Biology and Evolution, 2020, doi: 10.1093/molbev/msz189) in order to determinate the appropriate substitution model (according to AICc criterion) to use for the phylogenetic tree construction with `RAxML-NG` (https://github.com/stamatak/standard-RAxML, RAxML-NG: A fast, scalable, and user-friendly tool for maximum likelihood phylogenetic inference, Kozlov A.M, Darriba D, Flouri T, Morel B, and Stamatakis A, Bioinformatics, 2019, doi: 10.1093/bioinformatics/btz305):
+Substitution models were evaluated using `modeltest-ng` (see [here](https://github.com/ddarriba/modeltest)) in order to determinate the appropriate substitution model (according to AICc criterion) to use for the phylogenetic tree construction with `RAxML-NG` (see [here](https://github.com/amkozlov/raxml-ng)):
 ```
 modeltest-ng -i Spiro-human_concatenated.faa -p 12 -T raxml -d aa
-raxml-ng ...
-```
-The phylogenetic tree was visualized and modified using `figtree` (https://github.com/rambaut/figtree/).
+raxml-ng --all --msa Spiro-human_concatenated.faa --model LG+I+G4 --prefix Spirohuman-tree --seed 5 --threads 8 --bs-trees 1000
+raxml-ng --support --tree Spirohuman-tree.raxml.bestTree --bs-trees 1000 --prefix Spirohuman-tree-boot --threads 2
 
-### 2.1.2. Based on single gene (16S rDNA gene)
+```
+The phylogenetic tree was visualized and modified using `figtree` (see details [here](https://github.com/rambaut/figtree)).
+
+
+# 3. Gene-based phylogenetic analyses
+## 3.1. Based on single gene (16S rDNA gene)
 Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases of ocular infection. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced to include the diversity of *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (https://www.ncbi.nlm.nih.gov/books/NBK279690/, Basic local alignment search tool, Altschul SF, Gish W, Miller W, Myers EW, and Lipman DJ, Journal of Molecular Biology, 1990, doi: 10.1016/S0022-2836(05)80360-2) and the following command lines:
 ```
 command line
@@ -162,7 +231,7 @@ The phylogenetic trees were produced in a similar way that previously described 
 command line
 ```
 
-### 2.1.3. Multi-locus sequencing typing (MLST)
+## 3.2. Multi-locus sequencing typing (MLST)
 This phylogeny is based on an alignement of concatenated sequences of 4 genes (16S rDNA, *dnaK*, *gyrA*, and *rpoB* genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from fragment of single-gene sequences or from assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
 ```
 makeblastdb -in ./Genomes-ref/$ref-genome.fasta -dbtype nucl -out $ref-genome_db
@@ -190,25 +259,4 @@ modeltest-ng -i Spiro-MLST.fasta -p 12 -T raxml -d nt
 
 raxml-ng --all --msa Spiro-MLST.fasta --model GTR+I+G4 --prefix Spiro-MLST --seed 5 --threads 8 --bs-trees 1000
 raxml-ng --support --tree Spiro-MLST.raxml.bestTree --bs-trees 1000 --prefix SpiroMLST-boot --threads 2
-```
-## 2.2. fastANI and EZAAI
-On the same dataset that used for phylogenomics:
-```
-fastANI --rl list_genomes_ANI_Spiro-humains.txt --ql list_genomes_ANI_Spiro-humains.txt -o fastani_Spiro_humains.txt --matrix
-
-ezaai convert -i ./Genomes_Bakta_identity/SZISE.faa -s prot -o SZISE_db
-ezaai calculate -i db_EZAAI_Spiro_humains/ -j db_EZAAI_Spiro_humains/ -o EZAAI_Spiro_humains_matrix.txt -t 6
-aai_data <- read.table("EZAAI_Spiro_humains_matrix_v2_racc.txt", header=T,fill=T,sep="\t",dec=",")
-colnames(aai_data) <- c("Label_1", "Label_2", "AAI")
-aai_matrix <- aai_data %>% pivot_wider(names_from = Label_2, values_from = AAI)
-write.table(aai_matrix, "EZAAI_Spiro_humains_matrix_v2_matrix.txt", col.names = TRUE,row.names = FALSE, sep = "\t")
-aai_mat <- as.matrix(sapply(aai_matrix, as.numeric))
-heatmaply(aai_mat)
-```
-
-## 2.3. COG categories
-Using eggNOG-mapper:
-```
-# need to try
-emapper.py -i genome_proteins.faa -o genome_COG_annotation --itype proteins --cpu 8
 ```
