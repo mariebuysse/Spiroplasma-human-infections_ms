@@ -11,33 +11,28 @@
    
 
 # 1. Retrieving *Spiroplasma* genomes from biological samples
-In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy and vitrectomy samples). These cases have been reported in ***Spiroplasma* species as a rare cause of congenital cataract and uveitis: a case series** from **Farassat N, Reich M, Serr A, Küchlin S, Erwemi M, Auw-Hädrich C, Krastel H, and Lagrèze WA (BMC Ophthalmol, 2021, doi: 10.1186/s12886-021-02201-0)**. 
-
-For each sample, a set of paired-end reads is available. Details about the experimental and sequencing methods are available in our related manuscript. Following analyses are based on these reads' sets, and those are referred to as:
+In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy samples). These cases have been reported in [Farassat N et al. 2021](https://bmcophthalmol.biomedcentral.com/articles/10.1186/s12886-021-02201-0).\  
+For each sample, a set of paired-end reads is available in NCBI (SRA: XXXX & XXXX). Details about the experimental and sequencing methods are available in the related manuscript.\  
+Following analyses are based on these reads' sets, and those are referred to as:
 ```
-ech="CASE1 CASE3"
+ech="GRMP1 GRMP3"
 ```
 
 ## 1.1. Adapters' trimming
-Adapters' sequences were removed from raw reads using `Cutadapt` (https://cutadapt.readthedocs.io/en/stable/, Cutadapt removes adapter sequences from high-throughput sequencing reads, 
-Martin M,  EMBnet.journal, 2011, doi: org/10.14806/ej.17.1.200).
+Adapters' sequences were removed from raw reads using `Cutadapt` (see [here](https://cutadapt.readthedocs.io/en/stable/)):
 ```
 cutadapt -b file:$ech-adaptersF -o $ech-R1-trimmed.fastq.gz $ech-R1.fastq.gz
 ```
 
 ## 1.2. Assembly
-Reads were assembled using `MEGAHIT` (https://github.com/voutcn/megahit, MEGAHIT: An ultra-fast single-node solution for large and complex metagenomics assembly via succinct de Bruijn graph, Li D, Liu C-M, Luo R, Sadakane K, and Lam T-W, Bioinformatics, 2015, doi: 10.1093/bioinformatics/btv033). 
+Reads were assembled using `MEGAHIT` (see [here](https://github.com/voutcn/megahit)):
 ```
-module load bioinfo/MEGAHIT/1.2.9
 megahit -1 $ech-R1-trimmed.fastq.gz -2 $ech-R2-trimmed.fastq.gz -o $ech-metaMEGAHIT 
 ```
 
 ## 1.3. Binning and retrieving *Spiroplasma* MAGs
-**NEED TO TEST: https://rhysnewell.github.io/rosella/usage/ & https://bitbucket.org/berkeleylab/metabat/src/master/**
-
-*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (https://github.com/BinPro/CONCOCT, Binning metagenomic contigs by coverage and composition, Alneberg J, Smári Bjarnason B, de Bruijn I, Schirmer M, Quick J, Ijaz U, Lahti L, Loman N, Andersson A, and Quince C, Nature Methods, 2014, doi: 10.1038/nmeth.3103) and the `anvi'o` pipeline (https://anvio.org/, Community-led, integrated, reproducible multi-omics with anvi’o, Eren A, Kiefl E, Shaiber A et al., Nature Microbiology, 2021, doi: 10.1038/s41564-020-00834-3). 
-
-First, the contigs were formated to match the requirements of `anvi'o`. 
+*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (see [here](https://github.com/BinPro/CONCOCT) and the `anvi'o` pipeline (see [here](https://anvio.org/).\  
+First, the contigs were formated to match the requirements of `anvi'o`:
 ```
 command line
 ```
@@ -59,18 +54,19 @@ command line
 Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
 
 ## 1.4. Quality check of the final *Spiroplasma* MAGs
-Quality and multiple statistics were accessed using miComplete (https://pypi.org/project/micomplete/, Hugoson E., Lam W.T., Guy L. (2020) miComplete: weighted quality evaluation of assembled microbial genomes. Bioinformatics. doi: 10.1093/bioinformatics/btz664) and Quast(https://github.com/ablab/quast, Gurevich A., Saveliev V., Vyahhi N., Tesler G. (2013) QUAST: quality assessment tool for genome assemblies. Bioinformatics. doi: 10.1093/bioinformatics/btt086).
+Quality and multiple statistics were accessed using `miComplete` (see [here](https://pypi.org/project/micomplete/) and `Quast` (see [here](https://github.com/ablab/quast):
 ```
-## With Quast
-quast.py ./Spiro-CASES-genomes/*.fasta -o ./RESULTS-QUAST
+#Quast
+quast.py ./Spiro-GRM-genomes/*.fasta -o ./RESULTS-QUAST
 
-## With miComplete
+#miComplete
 miComplete miComplete_Spiro-human.tab --hmms Bact105 #miComplete_Spiro-human.tab a tabular separated file containing per line both a path to a genome and the type (i.e. fna)
 ```
+
 Results are:
 ```
-## Quast
-Assembly                    Spiro-CAS1-contigs  Spiro-CAS3-contigs
+#Quast
+Assembly                    Spiro-GRMP1         Spiro-GRMP3
 # contigs (>= 0 bp)         195                 229               
 # contigs (>= 1000 bp)      195                 229               
 # contigs (>= 5000 bp)      86                  95                
@@ -93,21 +89,20 @@ L50                         35                  45
 L75                         74                  92                
 # N's per 100 kbp           0.00                0.00
 
-## miComplete
-Name	Length	GC-content	Present Markers	Completeness	Redundancy	ContigsN50	L50	N90	L90	CDs	
-Spiro-CAS1-contigs	1292297	23.0	82	0.7810	1.1585	195	11017	35	3016	118	1971	
-Spiro-CAS3-contigs	1359048	24.56	81	0.7714	1.1481	229	10069	45	2560	146	2025	
+#miComplete
+Name	Length	GC-content	Present Markers	Completeness	Redundancy	Contigs	N50	L50	N90	L90	CDs	
+Spiro-GRMP1	1292297	0.23	82	0.7810	1.1585	195	11017	35	3016	118	1971	
+Spiro-GRMP3	1359048	0.25	81	0.7714	1.1481	229	10069	45	2560	146	2025
 ```
 
 ## 1.5. Annotation
 ```
-prokka $ech-genome.fasta --locustag $ech --prefix $ech --outdir Prokka-$ech --rfam --compliant --cpus 6
-
-bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-SpiroGRMP1/ --prefix SpiroGRMP1 --locus-tag SPIROGRMP1 --genus Spiroplasma --species ixodetis --strain GRM-P1 --threads 4 Spiro-CAS1-contigs.fasta --translation-table 4
+bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-Spiro-$ech/ --prefix Spiro-$ech --locus-tag SPIRO-$ech --genus Spiroplasma --species ixodetis --strain -$ech --threads 4 Spiro--$ech.fasta --translation-table 4
 ```
 
 ## 1.6. Genomes' visualization
 `GCview` 
+
 ```
 perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml -gc_skew F -gc_content F -size large-v2 -gene_decoration arc -tick_density 0.02 -custom backboneThickness=20 featureThickness=200 featureSlotSpacing=60
 java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
