@@ -1,6 +1,16 @@
 >This repository details command lines used in the production of the "**TITLE**" manuscript. 
 
-# Step 1: Retrieving *Spiroplasma* genomes from biological samples
+### Table of contents
+- [1. Retrieving *Spiroplasma* genomes from biological samples](#1-retrieving-spiroplasma-genomes-from-biological-samples)
+  - [1.1. Adapters' trimming](#11-adapters-trimming)
+  - [1.2. Assembly](#12-assembly)
+- [2. Genomes' description and comparison with others *Spiroplasma* genomes](#2-genomes-description-and-comparison-with-others-spiroplasma-genomes)
+  - [2.1. Phylogeny-based taxonomic assignation](#21-phylogeny-based-taxonomic-assignation)
+    - [2.1.1. Based on *Spiroplasma* MAGs and whole genomes](#211-based-on-spiroplasma-mags-and-whole-genomes)
+    - [2.1.2. Text](#212-text)
+   
+
+# 1. Retrieving *Spiroplasma* genomes from biological samples
 In this study, we aimed to retrieve and analyze the *Spiroplasma* MAGs (Metagenome-Assembled Genome) from biological samples collected from two symptomatic infants with ocular infections (i.e. lensectomy and vitrectomy samples). These cases have been reported in ***Spiroplasma* species as a rare cause of congenital cataract and uveitis: a case series** from **Farassat N, Reich M, Serr A, Küchlin S, Erwemi M, Auw-Hädrich C, Krastel H, and Lagrèze WA (BMC Ophthalmol, 2021, doi: 10.1186/s12886-021-02201-0)**. 
 
 For each sample, a set of paired-end reads is available. Details about the experimental and sequencing methods are available in our related manuscript. Following analyses are based on these reads' sets, and those are referred to as:
@@ -103,7 +113,7 @@ perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml 
 java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
 ```
 
-# Step 2: Genomes' description and comparison with others *Spiroplasma* genomes 
+# 2. Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Phylogeny-based taxonomic assignation 
 ### 2.1.1. Based on *Spiroplasma* MAGs and whole genomes
 First, single-copy orthologs (SCO) were identified using `OrthoFinder` (https://github.com/davidemms/OrthoFinder, OrthoFinder: phylogenetic orthology inference for comparative genomics, Emms DM and Kelly S, Genome Biology, 2019, doi: 10.1186/s13059-019-1832-y) from a set of specimens' genomes chosen to study the phylogenetic relationships between the obtained *Spiroplasma* MAGs and other *Spiroplasma* representatives:
