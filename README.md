@@ -33,7 +33,8 @@ megahit -1 $ech-R1-trimmed.fastq.gz -2 $ech-R2-trimmed.fastq.gz -o $ech-metaMEGA
 ```
 
 ## 1.3. Binning and retrieving *Spiroplasma* MAGs
-*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (see [here](https://github.com/BinPro/CONCOCT) and the `anvi'o` pipeline (see [here](https://anvio.org/).\  
+*Spiroplasma* MAGs were retrieved from assemblies using `CONCOCT` (see [here](https://github.com/BinPro/CONCOCT)) and the `anvi'o` pipeline (see [here](https://anvio.org/)).
+
 First, the contigs were formated to match the requirements of `anvi'o`:
 ```
 command line
@@ -43,6 +44,7 @@ The contigs were binned using `CONCOCT`:
 command line
 ```
 The `clustering_merged` CSV file produced by `CONCOCT` needed to be exported in a tabular-delimited TEXT file. 
+
 The bins' names had to be renamed to match the requirements of `anvi'o` : 
 ```
 command line
@@ -56,7 +58,7 @@ command line
 Let's see the `$ech-SUMMARY` file to check the taxnonomy results and some stats about each bin.
 
 ## 1.4. Quality check of the final *Spiroplasma* MAGs
-Quality and multiple statistics were accessed using `miComplete` (see [here](https://pypi.org/project/micomplete/) and `Quast` (see [here](https://github.com/ablab/quast):
+Quality and multiple statistics were accessed using `miComplete` (see [here](https://pypi.org/project/micomplete/)) and `Quast` (see [here](https://github.com/ablab/quast)):
 ```
 #Quast
 quast.py ./Spiro-GRM-genomes/*.fasta -o ./RESULTS-QUAST
