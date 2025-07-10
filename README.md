@@ -7,7 +7,7 @@
   - [1.3. Binning and retrieving *Spiroplasma* MAGs](#13-binning-and-retrieving-spiroplasma-mags)
   - [1.4. Quality check of the final *Spiroplasma* MAGs](#14-quality-check-of-the-final-spiroplasma-mags)
   - [1.5. Annotation](#15-annotation)
-  - [1.6. Genomes' visualization](#16-genomes-visualization)
+  - [1.6. MAGs' visualization](#16-mags-visualization)
 - [2. Genomes' description and comparison with others *Spiroplasma* genomes](#2-genomes-description-and-comparison-with-others-spiroplasma-genomes)
   - [2.1. Phylogeny-based taxonomic assignation](#21-phylogeny-based-taxonomic-assignation)
     - [2.1.1. Based on *Spiroplasma* MAGs and whole genomes](#211-based-on-spiroplasma-mags-and-whole-genomes)
@@ -104,13 +104,13 @@ Spiro-GRMP3	1359048	0.25	81	0.7714	1.1481	229	10069	45	2560	146	2025
 ```
 
 ## 1.5. Annotation
+Annotation was obtained using `Bakta` (see [here](https://github.com/oschwengers/bakta)):
 ```
 bakta --db /share/banks/bakta_db_2401/db/ --verbose --compliant --output Bakta-Spiro-$ech/ --prefix Spiro-$ech --locus-tag SPIRO-$ech --genus Spiroplasma --species ixodetis --strain -$ech --threads 4 Spiro--$ech.fasta --translation-table 4
 ```
 
-## 1.6. Genomes' visualization
-`GCview` 
-
+## 1.6. MAGs' visualization
+MAG representation was performed using `GCview` (see [here](https://github.com/paulstothard/cgview)):
 ```
 perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml -gc_skew F -gc_content F -size large-v2 -gene_decoration arc -tick_density 0.02 -custom backboneThickness=20 featureThickness=200 featureSlotSpacing=60
 java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
