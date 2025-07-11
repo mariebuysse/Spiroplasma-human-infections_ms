@@ -1,4 +1,4 @@
->This repository details command lines used in the production of the "**TITLE**" manuscript. 
+>This repository details command lines used in the production of the "**A unique evolutionary lineage of *Spiroplasma ixodetis* associated with infantile cataracts and adult febrile illness in Europe**" manuscript. 
 
 ### Table of contents
 - [1. Retrieving *Spiroplasma* genomes from biological samples](#1-retrieving-spiroplasma-genomes-from-biological-samples)
