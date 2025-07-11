@@ -14,7 +14,8 @@
   - [2.3. COG categories prediction](#23-cog-categories-prediction)
   - [2.4. Phylogenomics](#24-phylogenomics)
 - [3. Gene-based phylogenetic analyses](#3-gene-based-phylogenetic-analyses)
-
+  - [3.1. Based on single gene (16S rDNA gene)](#31-based-on-single-gene-16S-rdna-gene)
+  - [3.2. Based on multi-locus sequencing typing (MLST)](#32-based-on-multi-locus-sequencing-typing-mlst)
 
 
 # 1. Retrieving *Spiroplasma* genomes from biological samples
@@ -139,6 +140,7 @@ perl ./cgview_xml_builder.pl -sequence ./genome-$ech.gbk -output Spiro-$ech.xml 
 java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
 ```
 
+
 # 2. Genomes' description and comparison with others *Spiroplasma* genomes 
 ## 2.1. Identity matrix (ANI & AAI)
 Identity matrix were calcultated using `FastANI` (see details [here](https://github.com/ParBLiSS/FastANI)) and `EzAAI` (see details [here](https://github.com/endixk/ezaai)):
@@ -221,42 +223,12 @@ The phylogenetic tree was visualized and modified using `figtree` (see details [
 
 # 3. Gene-based phylogenetic analyses
 ## 3.1. Based on single gene (16S rDNA gene)
-Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases of ocular infection. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced to include the diversity of *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (https://www.ncbi.nlm.nih.gov/books/NBK279690/, Basic local alignment search tool, Altschul SF, Gish W, Miller W, Myers EW, and Lipman DJ, Journal of Molecular Biology, 1990, doi: 10.1016/S0022-2836(05)80360-2) and the following command lines:
-```
-command line
-```
+Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced to include the diversity of *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (see details [here](https://www.ncbi.nlm.nih.gov/books/NBK279690/)). 
 
-The phylogenetic trees were produced in a similar way that previously described (with adaptations to nucleotidic sequences):
+Then, the phylogenetic trees were produced in a similar way that previously described (with adaptations to nucleotidic sequences):
 ```
-command line
+modeltest-ng -i Spiro-16S-regions-regions.fasta -p 12 -T raxml -d nt
 ```
 
-## 3.2. Multi-locus sequencing typing (MLST)
-This phylogeny is based on an alignement of concatenated sequences of 4 genes (16S rDNA, *dnaK*, *gyrA*, and *rpoB* genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from fragment of single-gene sequences or from assemblies available on GenBank (National Center for Biotechnology Information) (see manuscript for detailed information). The fragments of genes were retrieved from published genomes using a local `BLAST` and the following command lines:
-```
-makeblastdb -in ./Genomes-ref/$ref-genome.fasta -dbtype nucl -out $ref-genome_db
-blastn -query Multiquery_Spiro.fasta -out ./output/SpiroMLST-genes_vs_$ref-genome.out -num_threads 6 -db $ref-genome_db -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -perc_identity 40
-
-## If needed, genes showing low similarity percentage were retrieved using a tblastn:
-tblastn -query Multiquery_Spiro_prot.fasta -out ./Other-genes_prot/SpiroMLST-prot-tblastn_vs_$ref-genome.out -db $ref-genome -num_threads 6 -outfmt "6 qseqid sseqid sseq qlen pident nident mismatch evalue sstart send gapopen" -evalue 1e-10
-python getFasta.py $ref-genome.fasta query-contigsfragments.bed > contigsfragments.fasta
-```
-
-The phylogenetic tree was produced in a similar way that previously described:
-```
-for file in /CONC/*
-do mafft "$file" > "$file"
-done
-
-cp ./CONC/*_align.fasta ./CONC_trimal/
-for file in /CONC_trimal/*
-do trimal -in "$file" -out "$file" -fasta -gt 1 -cons 50
-done
-
-AMAS.py concat -f fasta -d dna --in-files ./CONC_trimal/*.fasta
-
-modeltest-ng -i Spiro-MLST.fasta -p 12 -T raxml -d nt
-
-raxml-ng --all --msa Spiro-MLST.fasta --model GTR+I+G4 --prefix Spiro-MLST --seed 5 --threads 8 --bs-trees 1000
-raxml-ng --support --tree Spiro-MLST.raxml.bestTree --bs-trees 1000 --prefix SpiroMLST-boot --threads 2
-```
+## 3.2. Based on multi-locus sequencing typing (MLST)
+This phylogeny is based on an alignement of concatenated sequences of three genes (*dnaK*, *gyrA*, and *rpoB* genes) from *Spiroplasma* representatives and from our samples. For our samples, sequences where obtained from PCR assays, while other sequences were retrieved from GenBank and published genomes using a local `BLAST`. Then, the phylogenetic tree was produced in a similar way that previously described. 
