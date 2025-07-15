@@ -11,7 +11,7 @@
   - [1.5. Annotation](#15-annotation)
   - [1.6. MAGs' visualization](#16-mags-visualization)
 - [2. Genomes' description and comparison with others *Spiroplasma* genomes](#2-genomes-description-and-comparison-with-others-spiroplasma-genomes)
-  - [2.1. Identity matrix (ANI & AAI)](#21-identity-matrix-ani-aai)
+  - [2.1. Identity matrix (ANI and AAI)](#21-identity-matrix-ani-and-aai)
   - [2.2. Genomic content comparison between MAGs, *S. ixodetis* and *S. platyhelix* genomes](#22-genomic-content-comparison-between-mags-s-ixodetis-and-s-platyhelix-genomes)
   - [2.3. COG categories prediction](#23-cog-categories-prediction)
   - [2.4. Phylogenomics](#24-phylogenomics)
