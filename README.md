@@ -144,7 +144,7 @@ java -jar ./cgview.jar -i Spiro-$ech.xml -o map_Spiro-$ech.png -f png
 
 
 # 2. Genomes' description and comparison with others *Spiroplasma* genomes 
-## 2.1. Identity matrix (ANI & AAI)
+## 2.1. Identity matrix (ANI and AAI)
 Identity matrix were calcultated using `FastANI` (see details [here](https://github.com/ParBLiSS/FastANI)) and `EzAAI` (see details [here](https://github.com/endixk/ezaai)):
 ```
 #fastANI
