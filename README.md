@@ -15,6 +15,7 @@
   - [2.2. Genomic content comparison between MAGs, *S. ixodetis* and *S. platyhelix* genomes](#22-genomic-content-comparison-between-mags-s-ixodetis-and-s-platyhelix-genomes)
   - [2.3. COG categories prediction](#23-cog-categories-prediction)
   - [2.4. Phylogenomics](#24-phylogenomics)
+  - [2.5. Detection of protein sequences](#25-detection-of-protein-sequences)
 - [3. Gene-based phylogenetic analyses](#3-gene-based-phylogenetic-analyses)
   - [3.1. Based on single gene (16S rDNA gene)](#31-based-on-single-gene-16S-rdna-gene)
   - [3.2. Based on multi-locus sequencing typing (MLST)](#32-based-on-multi-locus-sequencing-typing-mlst)
@@ -223,8 +224,8 @@ raxml-ng --support --tree Spirohuman-tree.raxml.bestTree --bs-trees 1000 --prefi
 The phylogenetic tree was visualized and modified using `figtree` (see details [here](https://github.com/rambaut/figtree)).
 
 
-## 2.5. Detection of protein sequences with an OTU domain
-### 2.5.1. With an OTU domain
+## 2.5. Detection of protein sequences
+### 2.5.1. Detection of protein sequences with an OTU domain
 To detect and summarize protein sequences containing an OTU domain across a set of genomes, we used HMM profile for PF02338 (id. for the OTU-like cysteine protease, <https://www.ebi.ac.uk/interpro/entry/pfam/PF02338/>). For this purpose, we ran a dedicated script that relies on `HMMER` (hmmsearch, see details [here](<https://github.com/EddyRivasLab/hmmer/tree/master>)) to search for the domain in a combined FASTA `.faa` file containing proteins from the target genomes.
 To run the script, the files required are (i) a set of `Genomes.faa` (here SpiroGRMP1.faa, SpiroGRMP3.faa and other *Spiroplasma* genomes), and (ii) `PF02338.hmm` (to download [here](<https://www.ebi.ac.uk/interpro/entry/pfam/PF02338/>)).
 
@@ -278,7 +279,7 @@ raxml-ng --support --tree OTUtree -raxmlng.raxml.bestTree --bs-trees 1000 --pref
 
 Finally, the phylogenetic tree was visualized and adapted using `figtree` and `MEGA11` (see details [here](<https://megasoftware.net/>))
 
-### 2.5.3. With other domains
+### 2.5.3. Detection of protein sequences with other domains
 Once the OTU-containing sequences were detected, we predicted additional protein domains in these sequences using the 
 `HHpred` online webserver (see details [here](<https://toolkit.tuebingen.mpg.de/tools/hhpred>)) with default parameters, querying the `SCOPe70 (v2.08)`, `Pfam-A (v37.0)`, `SMART (v6.0)`, and `COG/KOG (v1.0)` databases.
 For domain identification in Cif protein sequences, see details [here](<https://github.com/julien01A/cif_evolution/>).
