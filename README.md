@@ -223,6 +223,67 @@ raxml-ng --support --tree Spirohuman-tree.raxml.bestTree --bs-trees 1000 --prefi
 The phylogenetic tree was visualized and modified using `figtree` (see details [here](https://github.com/rambaut/figtree)).
 
 
+## 2.5. Detection of protein sequences with an OTU domain
+### 2.5.1. With an OTU domain
+To detect and summarize protein sequences containing an OTU domain across a set of genomes, we used HMM profile for PF02338 (id. for the OTU-like cysteine protease, <https://www.ebi.ac.uk/interpro/entry/pfam/PF02338/>). For this purpose, we ran a dedicated script that relies on `HMMER` (hmmsearch, see details [here](<https://github.com/EddyRivasLab/hmmer/tree/master>)) to search for the domain in a combined FASTA `.faa` file containing proteins from the target genomes.
+To run the script, the files required are (i) a set of `Genomes.faa` (here SpiroGRMP1.faa, SpiroGRMP3.faa and other *Spiroplasma* genomes), and (ii) `PF02338.hmm` (to download [here](<https://www.ebi.ac.uk/interpro/entry/pfam/PF02338/>)).
+
+```
+# Concatenate all .faa files into one
+cat *.faa > All_proteins.faa
+
+# Run hmmsearch to get OTU domain table output
+hmmsearch --tblout OTUmatches_All_proteins_resultats.tbl PF02338.hmm All_proteins.faa
+hmmsearch --domtblout Work_OTUmatches_All_proteins_resultats.domtbl PF02338.hmm All_proteins.faa
+
+# Extract protein IDs and their sequence lengths
+awk '/^>/ {
+  if (seq) print id "\t" length(seq);
+  id = substr($1, 2); gsub(/ .*/, "", id); seq = ""; next
+} { seq = seq $0 } END { if (seq) print id "\t" length(seq) }' All_proteins.faa > Work_protein_lengths.tsv
+
+# Extract hits from the hmmsearch OTU domain table and calculate match lengths
+awk '!/^#/ {
+  prot = $1; evalue = $7;
+  start = $20+0; end = $21+0;
+  len = (end > start) ? end - start + 1 : start - end + 1;
+  print prot "\t" evalue "\t" start "\t" end "\t" len
+}' "Work_OTUmatches_All_proteins_resultats.domtbl" > Work_all_hits.tsv
+
+# Sort protein lengths and hits by protein ID
+sort -k1,1 Work_protein_lengths.tsv > Work_protein_lengths.sorted.tsv
+sort -k1,1 Work_all_hits.tsv > Work_all_hits.sorted.tsv
+
+# Join hits and protein lengths on protein ID
+join -t $'\t' -1 1 -2 1 Work_all_hits.sorted.tsv Work_protein_lengths.sorted.tsv > final_results.tmp
+# Add header and save final results
+(echo -e "ProteinID\tEvalue\tStart\tEnd\tMatchLength\tProteinLength"; cat final_results.tmp) > "OTUmatches_final_results.tsv"
+rm final_results.tmp
+```
+
+### 2.5.2. Phylogeny of the OTU domain
+Homologs of the OTU-containing sequences from SiRHI were identified using `BLASTP` on the NCBI BLAST webserver (<https://blast.ncbi.nlm.nih.gov/Blast.cgi>, <https://doi.org/10.1016/S0022-2836(05)80360-2>), querying only the OTU domain sequence. For the OTU domain alignment, we also included sequences from Cif and Spaid. The sequences were aligned using `MAFFT` in `UGENE` (see details [here](<https://ugene.net/>)), and positions containing gaps (‘-‘) were subsequently removed. All the OTU sequences for the alignment are provided in the `OTU_ALIGNMENT.faa`.
+
+Then, substitution models were evaluated using `modeltest` to determine the most appropriate ML substitution model (based on the AICc criterion), followed by phylogenetic tree construction with `raxml-ng`:
+
+```
+#Identification of the best-fitted ML substitution model
+modeltest-ng -i OTU_ALIGNMENT.faa -p 12 -T raxml -d aa 
+# The model: LG+G4
+
+#Phylogeny and bootstrap estimation
+raxml-ng --all --msa OTU_ALIGNMENT.faa --model LG+G4--prefix OTUtree-raxmlng --seed 5 --threads 4 --bs-trees 1000
+raxml-ng --support --tree OTUtree -raxmlng.raxml.bestTree --bs-trees 1000 --prefix OTUtree -boot --threads 2
+```
+
+Finally, the phylogenetic tree was visualized and adapted using `figtree` and `MEGA11` (see details [here](<https://megasoftware.net/>))
+
+### 2.5.3. With other domains
+Once the OTU-containing sequences were detected, we predicted additional protein domains in these sequences using the 
+`HHpred` online webserver (see details [here](<https://toolkit.tuebingen.mpg.de/tools/hhpred>)) with default parameters, querying the `SCOPe70 (v2.08)`, `Pfam-A (v37.0)`, `SMART (v6.0)`, and `COG/KOG (v1.0)` databases.
+For domain identification in Cif protein sequences, see details [here](<https://github.com/julien01A/cif_evolution/>).
+
+
 # 3. Gene-based phylogenetic analyses
 ## 3.1. Based on single gene (16S rDNA gene)
 Single-gene phylogenies were produced using the 16S rDNA gene sequences. This gene was used to describe *Spiroplasma* strains associated with previously reported cases. As different fragment lengths of the 16S rDNA gene were sequenced in those studies, several phylogenies will be produced to include the diversity of *Spiroplasma* strains. Sequences from other *Spiroplasma* representatives were retrieved from GenBank (National Center for Biotechnology Information), while sequences from published genomes were obtained using a local `BLAST` (see details [here](https://www.ncbi.nlm.nih.gov/books/NBK279690/)). 
