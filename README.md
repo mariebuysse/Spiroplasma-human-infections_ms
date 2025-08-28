@@ -1,4 +1,4 @@
->This repository details command lines used in the production of the "**A unique evolutionary lineage of *Spiroplasma ixodetis* associated with infantile cataracts and adult febrile illness in Europe**" manuscript by Buysse et al. 
+>This repository details command lines used in the production of the "**Emergence of a human-associated *Spiroplasma ixodetis* lineage responsible for infantile cataracts and adult febrile illness in Europe**" manuscript by Buysse et al. 
 
 [![DOI](https://zenodo.org/badge/626857615.svg)](https://doi.org/10.5281/zenodo.15862248)
 
